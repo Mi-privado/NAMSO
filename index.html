@@ -1,0 +1,741 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Namso Gen Pro</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            background: #0f0f0f;
+            min-height: 100vh;
+            padding: 20px;
+            color: #fff;
+        }
+        
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            opacity: 0.1;
+            z-index: -1;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 30px;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .header h1 {
+            font-size: 3em;
+            background: linear-gradient(135deg, #667eea, #764ba2, #f093fb);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 10px;
+            font-weight: 800;
+            letter-spacing: -1px;
+        }
+        
+        .header p {
+            color: #888;
+            font-size: 1.1em;
+        }
+        
+        .main-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            padding: 30px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            margin-bottom: 30px;
+        }
+        
+        .input-group {
+            margin-bottom: 25px;
+        }
+        
+        .input-group label {
+            display: block;
+            margin-bottom: 10px;
+            color: #ccc;
+            font-weight: 500;
+            font-size: 0.95em;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .input-group input,
+        .input-group select {
+            width: 100%;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            color: #fff !important;
+            font-size: 1em;
+            transition: all 0.3s ease;
+        }
+        
+        .input-group input:focus,
+        .input-group select:focus {
+            outline: none;
+            border-color: #667eea;
+            background: rgba(255, 255, 255, 0.15);
+            box-shadow: 0 0 20px rgba(102, 126, 234, 0.3);
+        }
+        
+        .input-group select {
+            cursor: pointer;
+            background: rgba(255, 255, 255, 0.1) !important;
+        }
+        
+        .input-group select option {
+            background: #1a1a1a;
+            color: #fff;
+        }
+        
+        .input-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+        
+        .buttons {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+        }
+        
+        .btn {
+            flex: 1;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 10px;
+            font-size: 1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+        }
+        
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.15);
+            transform: translateY(-2px);
+        }
+        
+        .btn-verify {
+            background: linear-gradient(135deg, #00c9ff, #92fe9d);
+        }
+        
+        .btn-verify:hover {
+            box-shadow: 0 10px 30px rgba(0, 201, 255, 0.4);
+        }
+        
+        .output-section {
+            margin-top: 30px;
+        }
+        
+        .output-section h3 {
+            margin-bottom: 15px;
+            color: #ccc;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 0.9em;
+        }
+        
+        .output-box {
+            background: rgba(0, 0, 0, 0.3);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 20px;
+            min-height: 200px;
+            font-family: 'Courier New', monospace;
+            color: #4ade80;
+            line-height: 1.8;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        
+        .output-box::-webkit-scrollbar {
+            width: 8px;
+        }
+        
+        .output-box::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+        }
+        
+        .output-box::-webkit-scrollbar-thumb {
+            background: rgba(102, 126, 234, 0.5);
+            border-radius: 10px;
+        }
+        
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+        
+        .stat-card {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 20px;
+            border-radius: 15px;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .stat-card h4 {
+            color: #888;
+            font-size: 0.9em;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .stat-card .value {
+            font-size: 2.5em;
+            font-weight: bold;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .copy-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            padding: 8px 15px;
+            background: rgba(102, 126, 234, 0.2);
+            border: 1px solid rgba(102, 126, 234, 0.5);
+            border-radius: 5px;
+            color: #667eea;
+            cursor: pointer;
+            font-size: 0.85em;
+            transition: all 0.3s ease;
+        }
+        
+        .copy-btn:hover {
+            background: rgba(102, 126, 234, 0.3);
+            transform: scale(1.05);
+        }
+        
+        .output-wrapper {
+            position: relative;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .card-item {
+            animation: fadeIn 0.3s ease;
+            padding: 2px 0;
+        }
+        
+        .results-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-top: 30px;
+        }
+        
+        .result-panel {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            padding: 25px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .result-panel h3 {
+            margin-bottom: 20px;
+            font-size: 1.3em;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .live-panel h3 {
+            color: #4ade80;
+            text-shadow: 0 0 20px rgba(74, 222, 128, 0.5);
+        }
+        
+        .dead-panel h3 {
+            color: #f87171;
+            text-shadow: 0 0 20px rgba(248, 113, 113, 0.5);
+        }
+        
+        .result-box {
+            background: rgba(0, 0, 0, 0.4);
+            border-radius: 10px;
+            padding: 20px;
+            min-height: 300px;
+            max-height: 500px;
+            overflow-y: auto;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+            line-height: 1.6;
+        }
+        
+        .live-panel .result-box {
+            border: 2px solid rgba(74, 222, 128, 0.3);
+        }
+        
+        .dead-panel .result-box {
+            border: 2px solid rgba(248, 113, 113, 0.3);
+        }
+        
+        .card-result {
+            margin-bottom: 20px;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 8px;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        .live-panel .card-result {
+            border-left: 3px solid #4ade80;
+            color: #4ade80;
+        }
+        
+        .dead-panel .card-result {
+            border-left: 3px solid #f87171;
+            color: #f87171;
+        }
+        
+        .card-result .separator {
+            color: #666;
+            margin: 5px 0;
+        }
+        
+        .result-stats {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 15px;
+            padding: 10px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+        }
+        
+        .result-stats span {
+            font-weight: bold;
+        }
+        
+        .live-panel .result-stats span {
+            color: #4ade80;
+        }
+        
+        .dead-panel .result-stats span {
+            color: #f87171;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🔥 NAMSO GEN PRO 🔥</h1>
+            <p>Generador y Verificador de Tarjetas Premium</p>
+        </div>
+        
+        <div class="main-card">
+            <div class="input-group">
+                <label>🔢 Ingrese BIN</label>
+                <input type="text" id="binInput" placeholder="Ej: 493172 o 493172xxxxxxxxxx" maxlength="16">
+            </div>
+            
+            <div class="input-row">
+                <div class="input-group">
+                    <label>📅 Mes de Expiración</label>
+                    <select id="monthSelect">
+                        <option value="random">Random</option>
+                        <option value="01">01 - Enero</option>
+                        <option value="02">02 - Febrero</option>
+                        <option value="03">03 - Marzo</option>
+                        <option value="04">04 - Abril</option>
+                        <option value="05">05 - Mayo</option>
+                        <option value="06">06 - Junio</option>
+                        <option value="07">07 - Julio</option>
+                        <option value="08">08 - Agosto</option>
+                        <option value="09">09 - Septiembre</option>
+                        <option value="10">10 - Octubre</option>
+                        <option value="11">11 - Noviembre</option>
+                        <option value="12">12 - Diciembre</option>
+                    </select>
+                </div>
+                
+                <div class="input-group">
+                    <label>📅 Año de Expiración</label>
+                    <select id="yearSelect">
+                        <option value="random">Random</option>
+                        <option value="2026">2026</option>
+                        <option value="2027">2027</option>
+                        <option value="2028">2028</option>
+                        <option value="2029">2029</option>
+                        <option value="2030">2030</option>
+                        <option value="2031">2031</option>
+                        <option value="2032">2032</option>
+                        <option value="2033">2033</option>
+                        <option value="2034">2034</option>
+                        <option value="2035">2035</option>
+                        <option value="2036">2036</option>
+                        <option value="2037">2037</option>
+                        <option value="2038">2038</option>
+                        <option value="2039">2039</option>
+                        <option value="2040">2040</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div class="input-row">
+                <div class="input-group">
+                    <label>🔑 CVV</label>
+                    <input type="text" id="cvvInput" placeholder="Dejar vacío para random" maxlength="4">
+                </div>
+                
+                <div class="input-group">
+                    <label>🔢 Cantidad</label>
+                    <input type="number" id="quantityInput" placeholder="Cantidad de tarjetas" value="10" min="1" max="100">
+                </div>
+            </div>
+            
+            <div class="buttons">
+                <button class="btn btn-primary" onclick="generateCards()">🎯 GENERAR</button>
+                <button class="btn btn-secondary" onclick="clearOutput()">🗑️ LIMPIAR</button>
+                <button class="btn btn-primary btn-verify" onclick="verifyAllCards()">✅ VERIFICAR TODAS LAS GENERADAS</button>
+            </div>
+        </div>
+        
+        <div class="output-section">
+            <h3>💳 Tarjetas Generadas</h3>
+            <div class="output-wrapper">
+                <button class="copy-btn" onclick="copyToClipboard()">📋 Copiar Todo</button>
+                <div class="output-box" id="output"></div>
+            </div>
+        </div>
+        
+        <div class="results-grid" id="resultsGrid" style="display: none;">
+            <div class="result-panel live-panel">
+                <h3>✅ LIVE</h3>
+                <div class="result-box" id="liveResults"></div>
+                <div class="result-stats">
+                    <span>Total: <span id="liveCount">0</span></span>
+                    <span>Success Rate: <span id="liveRate">0%</span></span>
+                </div>
+            </div>
+            
+            <div class="result-panel dead-panel">
+                <h3>❌ DEAD</h3>
+                <div class="result-box" id="deadResults"></div>
+                <div class="result-stats">
+                    <span>Total: <span id="deadCount">0</span></span>
+                    <span>Failed Rate: <span id="deadRate">0%</span></span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="stats">
+            <div class="stat-card">
+                <h4>Total Generadas</h4>
+                <div class="value" id="totalGenerated">0</div>
+            </div>
+            <div class="stat-card">
+                <h4>Válidas</h4>
+                <div class="value" id="validCards">0</div>
+            </div>
+            <div class="stat-card">
+                <h4>Tasa de Éxito</h4>
+                <div class="value" id="successRate">0%</div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        let generatedCards = [];
+        let totalGenerated = 0;
+        let validCount = 0;
+        
+        // Luhn Algorithm
+        function luhnCheck(cardNumber) {
+            let sum = 0;
+            let isEven = false;
+            
+            for (let i = cardNumber.length - 1; i >= 0; i--) {
+                let digit = parseInt(cardNumber[i], 10);
+                
+                if (isEven) {
+                    digit *= 2;
+                    if (digit > 9) {
+                        digit -= 9;
+                    }
+                }
+                
+                sum += digit;
+                isEven = !isEven;
+            }
+            
+            return sum % 10 === 0;
+        }
+        
+        function generateCards() {
+            const binInput = document.getElementById('binInput').value.replace(/\s/g, '');
+            const quantity = parseInt(document.getElementById('quantityInput').value) || 10;
+            const monthSelect = document.getElementById('monthSelect').value;
+            const yearSelect = document.getElementById('yearSelect').value;
+            const cvvInput = document.getElementById('cvvInput').value;
+            
+            if (!binInput || binInput.length < 6) {
+                alert('Por favor ingrese un BIN válido (mínimo 6 dígitos)');
+                return;
+            }
+            
+            const output = document.getElementById('output');
+            output.innerHTML = '';
+            generatedCards = [];
+            
+            for (let i = 0; i < quantity; i++) {
+                let cardNumber = binInput;
+                
+                // Completar con x o números random
+                while (cardNumber.length < 15) {
+                    if (cardNumber.includes('x')) {
+                        cardNumber = cardNumber.replace('x', Math.floor(Math.random() * 10).toString());
+                    } else {
+                        cardNumber += Math.floor(Math.random() * 10).toString();
+                    }
+                }
+                
+                // Calcular dígito de verificación con Luhn
+                for (let j = 0; j <= 9; j++) {
+                    const testCard = cardNumber + j;
+                    if (luhnCheck(testCard)) {
+                        cardNumber = testCard;
+                        break;
+                    }
+                }
+                
+                // Generar fecha
+                let month = monthSelect === 'random' ? 
+                    String(Math.floor(Math.random() * 12) + 1).padStart(2, '0') : 
+                    monthSelect;
+                    
+                let year = yearSelect === 'random' ? 
+                    String(Math.floor(Math.random() * 15) + 2026) : 
+                    yearSelect;
+                
+                // Generar CVV
+                let cvv = cvvInput || String(Math.floor(Math.random() * 1000)).padStart(3, '0');
+                
+                const cardString = `${cardNumber}|${month}|${year}|${cvv}`;
+                generatedCards.push(cardString);
+                
+                const cardDiv = document.createElement('div');
+                cardDiv.className = 'card-item';
+                cardDiv.textContent = cardString;
+                output.appendChild(cardDiv);
+            }
+            
+            totalGenerated += quantity;
+            document.getElementById('totalGenerated').textContent = totalGenerated;
+        }
+        
+        function clearOutput() {
+            document.getElementById('output').innerHTML = '';
+            document.getElementById('liveResults').innerHTML = '';
+            document.getElementById('deadResults').innerHTML = '';
+            document.getElementById('resultsGrid').style.display = 'none';
+            generatedCards = [];
+            totalGenerated = 0;
+            validCount = 0;
+            document.getElementById('totalGenerated').textContent = '0';
+            document.getElementById('validCards').textContent = '0';
+            document.getElementById('successRate').textContent = '0%';
+            document.getElementById('liveCount').textContent = '0';
+            document.getElementById('deadCount').textContent = '0';
+            document.getElementById('liveRate').textContent = '0%';
+            document.getElementById('deadRate').textContent = '0%';
+        }
+        
+        function copyToClipboard() {
+            const output = document.getElementById('output').textContent;
+            navigator.clipboard.writeText(output).then(() => {
+                const btn = document.querySelector('.copy-btn');
+                const originalText = btn.textContent;
+                btn.textContent = '✅ Copiado!';
+                setTimeout(() => {
+                    btn.textContent = originalText;
+                }, 2000);
+            });
+        }
+        
+        // Base de datos de bancos y respuestas
+        const banks = {
+            '493172': { name: 'BANORTE', country: 'MEXICO', flag: '🇲🇽' },
+            '4539': { name: 'CHASE', country: 'USA', flag: '🇺🇸' },
+            '4024': { name: 'BANK OF AMERICA', country: 'USA', flag: '🇺🇸' },
+            '4543': { name: 'HSBC', country: 'UK', flag: '🇬🇧' },
+            '4548': { name: 'SANTANDER', country: 'ESPAÑA', flag: '🇪🇸' },
+            '4557': { name: 'BBVA', country: 'MEXICO', flag: '🇲🇽' },
+            '5547': { name: 'BANAMEX', country: 'MEXICO', flag: '🇲🇽' },
+            '5256': { name: 'CITIBANK', country: 'USA', flag: '🇺🇸' },
+            '5354': { name: 'SCOTIABANK', country: 'CANADA', flag: '🇨🇦' }
+        };
+        
+        const cardTypes = ['CREDIT', 'DEBIT'];
+        const cardLevels = ['CLASSIC', 'GOLD', 'PLATINUM', 'BLACK', 'SIGNATURE'];
+        const responses = [
+            'Thank You! $5',
+            'Transaction Approved $10',
+            'Payment Successful $3',
+            'Authorized! $7',
+            'Success! $15'
+        ];
+        
+        function getCardBrand(number) {
+            if (number.startsWith('4')) return 'VISA';
+            if (number.startsWith('5')) return 'MASTERCARD';
+            if (number.startsWith('3')) return 'AMEX';
+            if (number.startsWith('6')) return 'DISCOVER';
+            return 'VISA';
+        }
+        
+        function getBankInfo(cardNumber) {
+            const bin = cardNumber.substring(0, 6);
+            for (let prefix in banks) {
+                if (bin.startsWith(prefix)) {
+                    return banks[prefix];
+                }
+            }
+            // Default
+            return { 
+                name: 'INTERNATIONAL BANK', 
+                country: 'USA', 
+                flag: '🇺🇸' 
+            };
+        }
+        
+        function formatCardResult(card, isLive) {
+            const bankInfo = getBankInfo(card.split('|')[0]);
+            const cardBrand = getCardBrand(card.split('|')[0]);
+            const cardType = cardTypes[Math.floor(Math.random() * cardTypes.length)];
+            const cardLevel = cardLevels[Math.floor(Math.random() * cardLevels.length)];
+            const response = responses[Math.floor(Math.random() * responses.length)];
+            
+            let result = `☇ CC: ${card}\n`;
+            
+            if (isLive) {
+                result += `ヾ⌿ Status: Approved! ✅\n`;
+                result += `ヾ⌿ Response: ${response}\n`;
+            } else {
+                result += `ヾ⌿ Status: Declined! ❌\n`;
+                result += `ヾ⌿ Response: Card Declined\n`;
+            }
+            
+            result += ` · · · · · · · · · · · · · · ·\n`;
+            result += `ヾ⌿ Bank: ${bankInfo.name}\n`;
+            result += `ヾ⌿ Type: ${cardBrand} - ${cardType} - ${cardLevel}\n`;
+            result += `ヾ⌿ Country: ${bankInfo.country} ${bankInfo.flag}`;
+            
+            return result;
+        }
+        
+        function verifyAllCards() {
+            if (generatedCards.length === 0) {
+                alert('Primero genera algunas tarjetas');
+                return;
+            }
+            
+            document.getElementById('resultsGrid').style.display = 'grid';
+            const liveResults = document.getElementById('liveResults');
+            const deadResults = document.getElementById('deadResults');
+            liveResults.innerHTML = '';
+            deadResults.innerHTML = '';
+            
+            let liveCount = 0;
+            let deadCount = 0;
+            
+            generatedCards.forEach((card, index) => {
+                setTimeout(() => {
+                    // Simulación de verificación (70% live, 30% dead)
+                    const isLive = Math.random() > 0.3;
+                    const formattedResult = formatCardResult(card, isLive);
+                    
+                    const resultDiv = document.createElement('div');
+                    resultDiv.className = 'card-result';
+                    resultDiv.innerHTML = formattedResult.replace(/\n/g, '<br>');
+                    
+                    if (isLive) {
+                        liveResults.appendChild(resultDiv);
+                        liveCount++;
+                        document.getElementById('liveCount').textContent = liveCount;
+                    } else {
+                        deadResults.appendChild(resultDiv);
+                        deadCount++;
+                        document.getElementById('deadCount').textContent = deadCount;
+                    }
+                    
+                    // Actualizar estadísticas
+                    const total = liveCount + deadCount;
+                    document.getElementById('validCards').textContent = liveCount;
+                    document.getElementById('successRate').textContent = 
+                        Math.round((liveCount / total) * 100) + '%';
+                    document.getElementById('liveRate').textContent = 
+                        Math.round((liveCount / total) * 100) + '%';
+                    document.getElementById('deadRate').textContent = 
+                        Math.round((deadCount / total) * 100) + '%';
+                    
+                    // Scroll automático
+                    liveResults.scrollTop = liveResults.scrollHeight;
+                    deadResults.scrollTop = deadResults.scrollHeight;
+                }, index * 500); // Delay para efecto de carga
+            });
+        }
+        
+        // Event listeners
+        document.getElementById('binInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') generateCards();
+        });
+        
+        // Inicialización
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('quantityInput').value = '10';
+        });
+    </script>
+</body>
+</html>
